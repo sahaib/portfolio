@@ -74,7 +74,10 @@ export const EXPERIENCE = [
     tasks: [
       'Create inhouse solutions for various teams',
       'Create and manage databases',
-      'Create and manage AI models',
+      'Create and manage AI support projects',
+      'Assist support team with technical queries',
+      'Create reports and dashboards for the management',
+      'Optimizing queries and improving database performance',
     ],
   },
   {
@@ -89,6 +92,9 @@ export const EXPERIENCE = [
       'Designing user hierarchy & user personas.',
       'Designing platform workflow for, 2 web apps and 3 mobile apps.',
       'Testing and debugging',
+      'Implementing new features and finding bugs',
+      'Creating user flows and wireframes',
+      'Creating user guides and documentationß',
     ],
   },
   {
@@ -101,6 +107,10 @@ export const EXPERIENCE = [
     tasks: [
       'Designing the brand identity and logo',
       'Designing the website and other social media content',
+      'Creating marketing materials',
+      'Creating and managing social media accounts',
+      'Creating and managing email newsletters',
+      'Creating and managing Instagram ads',
     ],
   },
   {
@@ -113,8 +123,8 @@ export const EXPERIENCE = [
     tasks: [
       'Support in the QA area and bug review',
       'Use of SCRUM methodology',
-      'Claro projects with the use of frameworks and libraries such as react and angular',
-      'Use of redux toolkit as aproposal which allowed a shorter development time when using this tool',
+      'Structured the QA process and created test cases',
+      'Managing new projects and their documentation',
     ],
   },
   // {

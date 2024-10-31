@@ -7,3 +7,8 @@ export const contentfulClient = contentful.createClient({
     : import.meta.env.CONTENTFUL_DELIVERY_TOKEN,
   host: import.meta.env.DEV ? 'preview.contentful.com' : 'cdn.contentful.com',
 })
+const entries = await contentfulClient.getEntries({
+  content_type: 'projects',
+  order: ['-sys.createdAt'],
+})
+console.log(entries)
