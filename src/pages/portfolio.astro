@@ -19,7 +19,10 @@ interface Project {
   }
 }
 
-const entries = await contentfulClient.getEntries<Project>({})
+const entries = await contentfulClient.getEntries<Project>({}).catch(err => {
+  console.error('Contentful Error:', err);
+  return { items: [] };
+})
 ---
 
 <BaseLayout
