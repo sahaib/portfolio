@@ -52,13 +52,13 @@ export const STUDIES = [
   {
     title: 'Computer Science',
     institution: 'University of Mumbai',
-    link: 'https://cibamumbai.org.in/',
+    link: 'https://mum.digitaluniversity.ac/',
     date: '2017 - 2021',
   },
   {
     title: 'Startup School',
     institution: 'CIBA Mumbai',
-    link: 'https://ciba.edu.in/',
+    link: 'https://cibamumbai.org.in/',
     date: '2023',
   }
 ]
