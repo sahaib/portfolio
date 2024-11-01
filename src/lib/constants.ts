@@ -50,16 +50,28 @@ export const SEARCH: Page = {
 // Study Page
 export const STUDIES = [
   {
-    title: 'Computer Science',
+    title: 'Full Stack Development',
+    institution: 'Freightify',
+    link: 'https://freightify.com/',
+    date: '2021-Current',
+  },
+  {
+    title: 'Bachelor of Computer Science',
     institution: 'University of Mumbai',
     link: 'https://mum.digitaluniversity.ac/',
-    date: '2017 - 2021',
+    date: '2017 - 2024',
   },
   {
     title: 'Startup School',
     institution: 'CIBA Mumbai',
     link: 'https://cibamumbai.org.in/',
-    date: '2023',
+    date: '2017-2021',
+  },
+  {
+    title: 'Entrepreneurship',
+    institution: 'Commutec',
+    link: 'https://commutec.in/',
+    date: '2016-2021',
   }
 ]
 
