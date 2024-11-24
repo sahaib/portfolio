@@ -1,6 +1,6 @@
 {
   "name": "@area44/astro-shadcn-ui-template",
-  "version": "23.12.26"
+  "version": "23.12.26",
   "engines": {
     "node": "20.x",
     "pnpm": "8.15.5"
