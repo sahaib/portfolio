@@ -1,12 +1,6 @@
 {
   "version": 2,
   "buildCommand": "pnpm run build",
-  "installCommand": "pnpm install",
-  "framework": "astro",
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/node"
-    }
-  ]
+  "installCommand": "corepack enable && corepack prepare pnpm@8.15.5 --activate && pnpm install",
+  "framework": "astro"
 }
