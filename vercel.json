@@ -1,12 +1,7 @@
 {
   "version": 2,
-  "framework": "astro",
   "buildCommand": "pnpm run build",
-  "installCommand": "pnpm install",
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/node"
-    }
-  ]
+  "installCommand": "npm install -g pnpm && pnpm install",
+  "framework": "astro",
+  "outputDirectory": "dist"
 }
