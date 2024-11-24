@@ -1,6 +1,13 @@
 {
-  "buildCommand": "pnpm run build",
-  "installCommand": "npm install -g pnpm@8.15.5 && pnpm install",
-  "framework": "astro",
-  "outputDirectory": "dist"
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "installCommand": "npm install -g pnpm && pnpm install",
+        "buildCommand": "pnpm run build"
+      }
+    }
+  ],
+  "framework": "astro"
 }
