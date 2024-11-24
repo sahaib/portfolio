@@ -1,8 +1,5 @@
 {
-  "installCommand": "pnpm install",
-  "buildCommand": "astro build",
-  "outputDirectory": "dist",
-  "github": {
-    "silent": true
-  }
+  "buildCommand": "pnpm install && pnpm run build",
+  "installCommand": "npm i -g pnpm && pnpm install",
+  "framework": "astro"
 }
