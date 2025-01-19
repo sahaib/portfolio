@@ -10,7 +10,7 @@ export default defineConfig({
   }),
   site: process.env.HEROKU_APP_NAME 
     ? `https://${process.env.HEROKU_APP_NAME}.herokuapp.com`
-    : 'https://sahaib-portfolio-9ba1759077cd.herokuapp.com',
+    : 'http://localhost:4321',
   integrations: [
     react(),
     tailwind({
