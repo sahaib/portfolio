@@ -1,8 +1,13 @@
 import { defineConfig } from 'astro/config';
+import node from '@astrojs/node';
+import react from '@astrojs/react';
+import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
-  // ... other config
+  output: 'server',
+  adapter: node({
+    mode: 'standalone'
+  }),
   site: 'https://work.sahaibsingh.com',
-  base: '/',
-  // ... rest of your config
+  integrations: [react(), tailwind()]
 }); 
