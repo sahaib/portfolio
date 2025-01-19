@@ -2,8 +2,8 @@
   "name": "@area44/astro-shadcn-ui-template",
   "version": "23.12.26",
   "engines": {
-    "node": "20.x",
-    "pnpm": "8.15.5"
+    "node": ">=18.0.0 <21.0.0",
+    "pnpm": "^8.15.5"
   },
   "packageManager": "pnpm@8.15.5",
   "description": "An Astro template for building apps.",
