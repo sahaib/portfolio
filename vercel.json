@@ -3,12 +3,5 @@
   "framework": "astro",
   "buildCommand": "pnpm build",
   "installCommand": "pnpm install",
-  "outputDirectory": "dist",
-  "functions": {
-    "dist/server/entry.mjs": {
-      "runtime": "nodejs20.x",
-      "memory": 1024,
-      "maxDuration": 10
-    }
-  }
+  "outputDirectory": "dist"
 }
