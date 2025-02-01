@@ -5,6 +5,9 @@ import node from '@astrojs/node';
 
 export default defineConfig({
   output: 'server',
+  adapter: node({
+    mode: 'standalone'
+  }),
   site: 'https://work.sahaibsingh.com',
   integrations: [react(), tailwind()],
   vite: {
@@ -13,7 +16,4 @@ export default defineConfig({
       emptyOutDir: true,
     },
   },
-  adapter: node({
-    mode: 'standalone'
-  })
 }); 
