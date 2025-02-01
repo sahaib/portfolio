@@ -3,5 +3,17 @@
   "devCommand": "pnpm dev",
   "installCommand": "pnpm install",
   "framework": "astro",
-  "outputDirectory": "dist"
+  "regions": ["iad1"],
+  "builds": [
+    {
+      "src": "dist/server/entry.mjs",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "dist/server/entry.mjs"
+    }
+  ]
 }
