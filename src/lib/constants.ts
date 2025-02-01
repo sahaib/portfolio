@@ -20,7 +20,7 @@ export const SITE: Site = {
   TITLE: 'Astro Sphere',
   DESCRIPTION:
     'Welcome to Astro Sphere, a portfolio and blog for designers and developers.',
-  AUTHOR: 'Mark Horn',
+  AUTHOR: 'Sahaib Singh',
 }
 
 // Work Page
@@ -178,28 +178,5 @@ export const EXPERIENCE = [
       'Structured the QA process and created test cases',
       'Managing new projects and their documentation',
     ],
-  },
-  // {
-  //   company: 'S I G',
-  //   location: 'Mumbai, India',
-  //   position: 'Software developer',
-  //   start: '2021',
-  //   end: '2021',
-  //   tasks: [
-  //     'Development of a dashboard with react admin and chartjs for managing and entering information',
-  //   ],
-  // },
-  // {
-  //   company: 'BOOKII',
-  //   location: 'Bogotá D C, Colombia',
-  //   position: 'Software developer',
-  //   start: '2019',
-  //   end: '2021',
-  //   tasks: [
-  //     'Productive collaborationwiththebackendteamforthecreationofthe conversationalclubs',
-  //     'Effective coding of conversational clubs following design guide lines and using the Redux statemanager',
-  //     'Creation of the Bookii page in Spanish and change of texts in cms',
-  //     'Generation of static posts using Gatsby and the Contentful cms for the Bookii blog',
-  //   ],
-  // },
+  }
 ]
