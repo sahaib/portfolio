@@ -47,10 +47,50 @@ export const SEARCH: Page = {
   DESCRIPTION: 'Search all posts and projects by keyword.',
 }
 
+// Services
+export const SERVICES = [
+  {
+    title: 'Website Designing & Development',
+    description: 'Comprehensive website solutions powered by AI: Custom development, E-commerce, CMS, SEO optimization',
+    icon: '🌐'
+  },
+  {
+    title: 'Product Designing UX/UI',
+    description: 'User-centered design services for digital products with focus on usability and experience',
+    icon: '📱'
+  },
+  {
+    title: 'Graphic Designing',
+    description: 'Creative and professional graphic design solutions for your brand identity',
+    icon: '🎨'
+  },
+  {
+    title: 'Consultation',
+    description: 'Expert consultation services designed specifically for small businesses',
+    icon: '💡'
+  },
+  {
+    title: 'Product/Project Management',
+    description: 'Professional web application development and project management services',
+    icon: '📊'
+  },
+  {
+    title: 'Mobile App Development',
+    description: 'Native and hybrid mobile app development for cross-platform',
+    icon: '📱'
+  }
+]
+
+// WhatsApp
+export const WHATSAPP_NUMBER = '+917021875228'
+export const WHATSAPP_MESSAGE = 'Hi, I\'m interested in your services, When can we connect?'
+
+
+
 // Study Page
 export const STUDIES = [
   {
-    title: 'Full Stack Development',
+    title: 'Product and Technical Support',
     institution: 'Freightify',
     link: 'https://freightify.com/',
     date: '2021-Current',

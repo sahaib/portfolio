@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import TopLayout from '../layouts/TopLayout.astro'
+import BottomLayout from '../layouts/BottomLayout.astro'
+import { SERVICES } from '../lib/constants'
+import { buttonVariants } from '../components/ui/button'
+import { MessageCircle } from 'lucide-react'
+
+const WHATSAPP_NUMBER = '+917021875228'
+const WHATSAPP_MESSAGE = 'Hi, I\'m interested in your services!'
+---
+
+<BaseLayout title="Services - Sahaib Singh" description="Professional services offered by Sahaib Singh">
+  <main class="flex min-h-[80vh] flex-auto flex-col">
+    <TopLayout>
+      <h2 class="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+        Services
+      </h2>
+    </TopLayout>
+    <BottomLayout>
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {SERVICES.map((service) => (
+          <div class="flex flex-col gap-4 rounded-lg border p-6">
+            <h3 class="text-xl font-semibold flex items-center gap-2">
+              <span>{service.icon}</span>
+              {service.title}
+            </h3>
+            <p class="text-muted-foreground">{service.description}</p>
+          </div>
+        ))}
+      </div>
+      
+      <div class="mt-8 flex justify-center">
+        <a 
+          href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class={`${buttonVariants()} inline-flex items-center`}
+        >
+        <br>
+          <MessageCircle className="mr-2 h-4 w-4" client:load />
+          Chat on WhatsApp
+        </a>
+      </div>
+    </BottomLayout>
+  </main>
+</BaseLayout> 

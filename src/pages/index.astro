@@ -10,6 +10,7 @@ import CVCard from '../components/sections/CVCard.astro'
 import ExperienceCard from '../components/sections/ExperienceCard.astro'
 import TattooCard from '../components/sections/TattooCard.astro'
 import StudyCard from '../components/sections/StudyCard.astro'
+import ServicesCard from '../components/sections/ServicesCard.astro'
 //
 // import { motion, AnimatePresence } from 'framer-motion'
 ---
@@ -51,6 +52,7 @@ import StudyCard from '../components/sections/StudyCard.astro'
   >
     <IntroCard />
     <AboutMe />
+    <ServicesCard />
     <CVCard />
     <Now />
     <Card
@@ -58,28 +60,31 @@ import StudyCard from '../components/sections/StudyCard.astro'
       rowSpan="md:row-span-2"
       title="Portfolio & Projects"
       href="/portfolio"
-    />
+    >
+      <div class="flex flex-col gap-2">
+        <p class="text-sm text-muted-foreground">
+          Explore my recent work:
+        </p>
+        <ul class="list-disc list-inside text-sm">
+          <li>Web Applications</li>
+          <li>Chrome Extensions</li>
+          <li>Design Projects</li>
+          <li>Open Source Contributions</li>
+        </ul>
+      </div>
+    </Card>
     <TimeZoneCard />
     <ContactsCard />
     <ExperienceCard />
     <Card colSpan="md:col-span-1" rowSpan="md:row-span-1">
       <div class="flex h-full flex-col justify-between">
         <blockquote class="mt-6 border-l-2 pl-6 italic">
-          “Details matter, it's worth waiting to get it right.”
+          "Details matter, it's worth waiting to get it right."
         </blockquote>
         <p class="mt-2 text-xs">- Steve Jobs</p>
       </div>
     </Card>
     <TattooCard />
     <StudyCard />
-    <!-- <Card colSpan="md:col-span-1" rowSpan="md:row-span-1">
-      <p class="text-xs">
-        © 2023 · Crafted with ♥️ using <a
-          href="https://astro.build/"
-          target="_blank"
-          class="text-red-500">Astro</a
-        > by Gianmarco.
-      </p>
-    </Card> -->
   </main>
 </BaseLayout>
