@@ -12,7 +12,8 @@ export const contentfulClient = contentful.createClient({
 export async function getProjects() {
   const entries = await contentfulClient.getEntries({
     content_type: 'projects',
-    order: ['-sys.createdAt']
+    order: ['-sys.createdAt'],
+    limit: 100
   })
   
   return entries
