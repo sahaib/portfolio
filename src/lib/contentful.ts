@@ -1,21 +1,29 @@
 import pkg from 'contentful';
 const { createClient } = pkg;
 
-// Create a standard client for regular content delivery
-export const contentfulClient = createClient({
-  space: import.meta.env.CONTENTFUL_SPACE_ID,
-  accessToken: import.meta.env.CONTENTFUL_PREVIEW_TOKEN,
-  host: 'preview.contentful.com',
-})
+// Create a standard client for regular content delivery with error handling
+export const contentfulClient = (() => {
+  try {
+    return createClient({
+      space: import.meta.env.CONTENTFUL_SPACE_ID,
+      accessToken: import.meta.env.CONTENTFUL_PREVIEW_TOKEN,
+      host: 'preview.contentful.com',
+    });
+  } catch (error) {
+    console.error('Error initializing Contentful client:', error);
+    // Return a dummy client that returns empty data
+    return {
+      getEntries: async () => ({ items: [] })
+    };
+  }
+})();
 
 // To get only Projects content type (excluding LinkedIn Articles)
 export async function getProjects() {
   try {
     const entries = await contentfulClient.getEntries({
       content_type: 'projects',
-      order: ['-sys.createdAt'],
-      // Add a unique query parameter to bust cache when needed
-      'sys.revision': Date.now()
+      order: ['-sys.createdAt']
     });
     
     return entries;
@@ -25,11 +33,10 @@ export async function getProjects() {
   }
 }
 
-// Helper function to ensure we're always getting fresh content
-export function addTimestampToQuery(query = {}) {
-  return {
-    ...query,
-    'sys.revision': Date.now()
-  };
+// Helper function to add a cache-busting parameter that works with Contentful
+export function addTimestampToQuery<T>(query: T): T {
+  // We're just returning the original query without modification
+  // since we can't use sys.revision and don't need cache busting with SSR
+  return query;
 }
 

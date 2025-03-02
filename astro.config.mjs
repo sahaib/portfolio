@@ -11,6 +11,7 @@ export default defineConfig({
     webAnalytics: {
       enabled: true,
     },
+    includeFiles: ['.env'],
   }),
   integrations: [
     react(), 
@@ -26,6 +27,11 @@ export default defineConfig({
       headers: {
         'Cache-Control': 'public, max-age=0, s-maxage=60, stale-while-revalidate=86400'
       }
+    },
+    // Improve error handling
+    logLevel: 'info',
+    optimizeDeps: {
+      exclude: ['@contentful/rich-text-html-renderer']
     }
   }
 }); 
