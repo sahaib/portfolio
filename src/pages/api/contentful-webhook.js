@@ -1,20 +1,11 @@
-// Vercel Serverless Function for Contentful webhook
-export default async function handler(req, res) {
-  // Only allow POST requests
-  if (req.method !== 'POST') {
-    return new Response(JSON.stringify({ message: 'Method not allowed' }), {
-      status: 405,
-      headers: { 'Content-Type': 'application/json' }
-    });
-  }
-
+export async function post({ request }) {
   try {
     // Parse the request body
-    const body = await req.json();
+    const body = await request.json();
     
     // Verify the webhook secret
-    const secret = req.headers.get('x-contentful-webhook-secret');
-    if (secret !== process.env.CONTENTFUL_WEBHOOK_SECRET) {
+    const secret = request.headers.get('x-contentful-webhook-secret');
+    if (secret !== import.meta.env.CONTENTFUL_WEBHOOK_SECRET) {
       return new Response(JSON.stringify({ message: 'Invalid webhook secret' }), {
         status: 401,
         headers: { 'Content-Type': 'application/json' }
@@ -27,9 +18,6 @@ export default async function handler(req, res) {
     
     // Log the webhook event
     console.log(`Contentful webhook triggered for content type: ${contentType}`);
-    
-    // With server-side rendering, we don't need to explicitly revalidate
-    // The content will be fetched fresh on the next request
     
     return new Response(JSON.stringify({ 
       success: true,

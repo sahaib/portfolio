@@ -1,8 +1,7 @@
-// Vercel Serverless Function for revalidation
-export default async function handler(req) {
+export async function post({ request }) {
   // Check for secret to confirm this is a valid request
-  const authHeader = req.headers.get('authorization');
-  const expectedAuth = `Bearer ${process.env.CONTENTFUL_WEBHOOK_SECRET}`;
+  const authHeader = request.headers.get('authorization');
+  const expectedAuth = `Bearer ${import.meta.env.CONTENTFUL_WEBHOOK_SECRET}`;
   
   if (authHeader !== expectedAuth) {
     return new Response(JSON.stringify({ message: 'Invalid token' }), {

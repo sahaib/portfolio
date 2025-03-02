@@ -1,19 +1,15 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
-import vercel from '@astrojs/vercel/static';
+import vercel from '@astrojs/vercel/serverless';
 
 export default defineConfig({
-  output: 'static',
+  output: 'server',
   site: 'https://work.sahaibsingh.com',
   adapter: vercel({
     analytics: true,
     webAnalytics: {
       enabled: true,
-    },
-    isr: {
-      // Enable Incremental Static Regeneration
-      expiration: 60, // 60 seconds
     },
   }),
   integrations: [

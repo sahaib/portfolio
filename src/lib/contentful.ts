@@ -10,13 +10,18 @@ export const contentfulClient = createClient({
 
 // To get only Projects content type (excluding LinkedIn Articles)
 export async function getProjects() {
-  const entries = await contentfulClient.getEntries({
-    content_type: 'projects',
-    order: ['-sys.createdAt'],
-    // Add a unique query parameter to bust cache when needed
-    'sys.revision': Date.now()
-  })
-  
-  return entries
+  try {
+    const entries = await contentfulClient.getEntries({
+      content_type: 'projects',
+      order: ['-sys.createdAt'],
+      // Add a unique query parameter to bust cache when needed
+      'sys.revision': Date.now()
+    });
+    
+    return entries;
+  } catch (error) {
+    console.error('Error fetching projects from Contentful:', error);
+    return { items: [] }; // Return empty array in case of error
+  }
 }
 
