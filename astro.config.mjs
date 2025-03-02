@@ -11,7 +11,6 @@ export default defineConfig({
     webAnalytics: {
       enabled: true,
     },
-    includeFiles: ['.env'],
   }),
   integrations: [
     react(), 

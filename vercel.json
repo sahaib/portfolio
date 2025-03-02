@@ -14,11 +14,5 @@
         }
       ]
     }
-  ],
-  "env": {
-    "CONTENTFUL_SPACE_ID": "@contentful_space_id",
-    "CONTENTFUL_PREVIEW_TOKEN": "@contentful_preview_token",
-    "CONTENTFUL_DELIVERY_TOKEN": "@contentful_delivery_token",
-    "CONTENTFUL_WEBHOOK_SECRET": "@contentful_webhook_secret"
-  }
+  ]
 }

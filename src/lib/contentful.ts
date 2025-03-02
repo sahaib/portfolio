@@ -4,9 +4,20 @@ const { createClient } = pkg;
 // Create a standard client for regular content delivery with error handling
 export const contentfulClient = (() => {
   try {
+    // Check if environment variables are defined
+    const spaceId = import.meta.env.CONTENTFUL_SPACE_ID;
+    const accessToken = import.meta.env.CONTENTFUL_PREVIEW_TOKEN;
+    
+    if (!spaceId || !accessToken) {
+      console.warn('Contentful environment variables are missing. Using dummy client.');
+      return {
+        getEntries: async () => ({ items: [] })
+      };
+    }
+    
     return createClient({
-      space: import.meta.env.CONTENTFUL_SPACE_ID,
-      accessToken: import.meta.env.CONTENTFUL_PREVIEW_TOKEN,
+      space: spaceId,
+      accessToken: accessToken,
       host: 'preview.contentful.com',
     });
   } catch (error) {
