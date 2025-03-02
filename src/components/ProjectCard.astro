@@ -12,21 +12,55 @@ const {
 } = Astro.props
 ---
 
-<Tag href={href} class={`${className}`} `>
+<Tag href={href} class={`${className} block transform transition-all duration-300 hover:scale-[1.02]`}>
   <ShadcnCard
-    className={`transfor-y-[-40%] align-start perspective-1200 group relative flex-none transform justify-start overflow-hidden shadow-lg transition duration-75 ease-in-out ${href ? 'cursor-pointer hover:border-primary' : ''} `}
+    className={`group relative flex-none overflow-hidden rounded-lg shadow-md transition-all duration-300 ease-in-out 
+    ${href ? 'cursor-pointer hover:shadow-xl hover:border-primary' : ''}`}
   >
-    <img
-      src={imagePath}
-      alt={altText}
-      class="h-48 w-full rounded-2xl rounded-bl-none rounded-br-none object-cover"
-      loading="eager"
-    />
-    <div class="flex flex-col gap-y-0.5 px-5 py-4">
-      <h1 class="text-lg font-medium">{heading}</h1>
+    <div class="relative overflow-hidden">
+      <img
+        src={imagePath}
+        alt={altText}
+        class="h-48 w-full object-cover transition-transform duration-700 ease-in-out group-hover:scale-110"
+        loading="eager"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+    </div>
+    
+    <div class="flex flex-col gap-y-0.5 p-5">
+      <h1 class="text-lg font-medium transition-colors duration-300 group-hover:text-primary">{heading}</h1>
       <h2 class="text-muted-foreground">{subheading}</h2>
+      
+      <div class="mt-2 flex items-center text-sm font-medium text-primary opacity-0 transform translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
+        View Project
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+        >
+          <path d="M5 12h14"></path>
+          <path d="m12 5 7 7-7 7"></path>
+        </svg>
+      </div>
     </div>
 
     <slot />
   </ShadcnCard>
 </Tag>
+
+<style>
+  /* Add a subtle tilt effect on hover */
+  @media (prefers-reduced-motion: no-preference) {
+    a:hover .group {
+      transform: perspective(1000px) rotateX(2deg) rotateY(2deg);
+      transition: transform 0.3s ease;
+    }
+  }
+</style>
