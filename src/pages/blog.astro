@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import BlogCard from '../components/BlogCard.astro';
+import { getBlogPosts } from '../lib/contentful';
+
+const title = 'Blog | Sahaib Singh';
+const description = 'Thoughts, ideas, and insights on web development, design, and technology.';
+
+// Fetch blog posts from Contentful
+const blogPostsResponse = await getBlogPosts();
+const blogPosts = blogPostsResponse.items;
+---
+
+<BaseLayout title={title} description={description}>
+  <Container size="xl">
+    <div class="py-12 md:py-16">
+      <div class="mb-8 text-center">
+        <h1 class="text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">Blog</h1>
+        <p class="mt-4 text-xl text-muted-foreground">
+          Thoughts, ideas, and insights on web development, design, and technology.
+        </p>
+      </div>
+
+      {blogPosts.length === 0 ? (
+        <div class="flex flex-col items-center justify-center py-12 text-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="h-12 w-12 text-muted-foreground"
+          >
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+          </svg>
+          <h2 class="mt-4 text-xl font-semibold">No blog posts yet</h2>
+          <p class="mt-2 text-muted-foreground">Check back soon for new content!</p>
+        </div>
+      ) : (
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {blogPosts.map((post: any) => (
+            <BlogCard
+              title={post.fields.title as string}
+              description={(post.fields.description as string) || (post.fields.excerpt as string) || ''}
+              date={post.sys.createdAt as string}
+              slug={post.fields.slug as string}
+              coverImage={post.fields.coverImage?.fields?.file?.url ? `https:${post.fields.coverImage.fields.file.url}` : undefined}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  </Container>
+</BaseLayout> 

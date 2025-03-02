@@ -1,0 +1,55 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  date: string;
+  slug: string;
+  coverImage?: string;
+}
+
+const { title, description, date, slug, coverImage } = Astro.props;
+
+// Format date
+const formattedDate = new Date(date).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<a href={`/blog/${slug}`} class="group block">
+  <div class="overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-all duration-200 hover:shadow-md">
+    {coverImage && (
+      <div class="relative h-48 w-full overflow-hidden">
+        <img
+          src={coverImage}
+          alt={title}
+          class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+        />
+      </div>
+    )}
+    <div class="p-4">
+      <p class="text-sm text-muted-foreground">{formattedDate}</p>
+      <h3 class="mt-1 text-xl font-semibold text-foreground">{title}</h3>
+      <p class="mt-2 line-clamp-2 text-muted-foreground">{description}</p>
+      <div class="mt-4 flex items-center text-sm font-medium text-primary">
+        Read more
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+        >
+          <path d="M5 12h14"></path>
+          <path d="m12 5 7 7-7 7"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+</a> 
