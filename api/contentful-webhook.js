@@ -1,5 +1,9 @@
 // Vercel Serverless Function for Contentful webhook
-export default async function handler(req, res) {
+export const config = {
+  runtime: 'edge',
+};
+
+export default async function handler(req) {
   // Only allow POST requests
   if (req.method !== 'POST') {
     return new Response(JSON.stringify({ message: 'Method not allowed' }), {

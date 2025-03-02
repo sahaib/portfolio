@@ -25,3 +25,11 @@ export async function getProjects() {
   }
 }
 
+// Helper function to ensure we're always getting fresh content
+export function addTimestampToQuery(query = {}) {
+  return {
+    ...query,
+    'sys.revision': Date.now()
+  };
+}
+

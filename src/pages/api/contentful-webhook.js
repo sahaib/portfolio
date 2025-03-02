@@ -1,4 +1,8 @@
-export async function post({ request }) {
+export const config = {
+  runtime: 'edge',
+};
+
+export async function POST({ request }) {
   try {
     // Parse the request body
     const body = await request.json();

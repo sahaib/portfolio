@@ -1,4 +1,8 @@
-export async function post({ request }) {
+export const config = {
+  runtime: 'edge',
+};
+
+export async function POST({ request }) {
   // Check for secret to confirm this is a valid request
   const authHeader = request.headers.get('authorization');
   const expectedAuth = `Bearer ${import.meta.env.CONTENTFUL_WEBHOOK_SECRET}`;

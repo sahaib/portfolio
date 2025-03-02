@@ -1,4 +1,8 @@
 // Vercel Serverless Function for revalidation
+export const config = {
+  runtime: 'edge',
+};
+
 export default async function handler(req) {
   // Check for secret to confirm this is a valid request
   const authHeader = req.headers.get('authorization');
