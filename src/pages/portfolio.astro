@@ -7,53 +7,22 @@ import ProjectCard from '../components/ProjectCard.astro'
 
 import { contentfulClient } from '../lib/contentful'
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer'
-import type { EntryFieldTypes, EntryCollection } from 'contentful'
+import type { EntryFieldTypes } from 'contentful'
 
-// Using a more generic type to avoid TypeScript errors
-interface ContentfulEntry {
-  sys: {
-    id: string;
-    createdAt: string;
-  };
+interface Project {
+  contentTypeId: 'Projects'
   fields: {
-    name: string;
-    website: string;
-    description?: string;
-    img?: {
-      fields: {
-        file: {
-          url: string;
-        };
-        title?: string;
-      };
-    };
-  };
+    name: EntryFieldTypes.Text
+    img: EntryFieldTypes.AssetLink
+    website: EntryFieldTypes.EntryResourceLink<any>
+    repositorio: EntryFieldTypes.EntryResourceLink<any>
+  }
 }
 
-let entries: { items: ContentfulEntry[] } = { items: [] };
-let errorMessage = '';
-
-try {
-  // Simple query without the problematic timestamp
-  const response = await contentfulClient.getEntries({
-    content_type: 'projects',
-    order: ['-sys.createdAt']
-  });
-  
-  // Type assertion to handle the response
-  entries = response as unknown as { items: ContentfulEntry[] };
-  
-  // Log success for debugging
-  console.log(`Successfully fetched ${entries.items.length} projects from Contentful`);
-} catch (error) {
-  console.error('Error fetching projects from Contentful:', error);
-  errorMessage = 'Unable to load projects at this time. Please try again later.';
-  // Entries will remain an empty array
-}
-
-// Fallback to hardcoded projects if Contentful fails
-const workArray = Array.isArray(WORK) ? WORK : [];
-const useHardcodedProjects = entries.items.length === 0 && workArray.length > 0;
+const entries = await contentfulClient.getEntries<Project>({}).catch(err => {
+  console.error('Contentful Error:', err);
+  return { items: [] };
+})
 ---
 
 <BaseLayout
@@ -70,50 +39,25 @@ const useHardcodedProjects = entries.items.length === 0 && workArray.length > 0;
     </TopLayout>
     <BottomLayout size="xl">
       <div class="flex w-full flex-wrap justify-center gap-2">
-        {errorMessage && (
-          <div class="text-center py-10 w-full">
-            <p class="text-lg text-red-500">{errorMessage}</p>
-            <p class="text-sm text-muted-foreground mt-2">Please check back later.</p>
-          </div>
-        )}
-        
-        {entries.items && entries.items.length > 0 ? (
+        {
           entries.items
             .sort(
               (a, b) =>
                 new Date(b.sys.createdAt).getTime() -
                 new Date(a.sys.createdAt).getTime()
             )
-            .map((entry) => (
+            .map((entry: any) => (
               <ProjectCard
                 key={entry?.sys?.id}
-                href={entry?.fields?.website}
-                heading={entry?.fields?.name}
-                subheading={entry?.fields?.description}
-                imagePath={entry?.fields?.img?.fields?.file?.url}
-                altText={entry?.fields?.img?.fields?.title}
-                class="w-full sm:w-2/5"
-              />
-            ))
-        ) : useHardcodedProjects ? (
-          // Fallback to hardcoded projects
-          workArray.map((project) => (
-            <ProjectCard
-              key={project.id}
-              href={project.link}
-              heading={project.title}
-              subheading={project.description}
-              imagePath={project.image}
-              altText={project.title}
+              href={entry?.fields?.website}
+              heading={entry?.fields?.name}
+              subheading={entry?.fields?.description}
+              imagePath={entry?.fields?.img?.fields?.file.url}
+              altText={entry?.fields?.img?.fields.title}
               class="w-full sm:w-2/5"
             />
           ))
-        ) : (
-          <div class="text-center py-10">
-            <p class="text-lg">Projects are loading or temporarily unavailable.</p>
-            <p class="text-sm text-muted-foreground mt-2">Please check back later.</p>
-          </div>
-        )}
+        }
       </div>
     </BottomLayout>
   </main>
