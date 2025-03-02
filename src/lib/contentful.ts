@@ -1,6 +1,8 @@
-import * as contentful from 'contentful';
+import pkg from 'contentful';
+const { createClient } = pkg;
 
-export const contentfulClient = contentful.createClient({
+// Create a standard client for regular content delivery
+export const contentfulClient = createClient({
   space: import.meta.env.CONTENTFUL_SPACE_ID,
   accessToken: import.meta.env.CONTENTFUL_PREVIEW_TOKEN,
   host: 'preview.contentful.com',
@@ -10,7 +12,9 @@ export const contentfulClient = contentful.createClient({
 export async function getProjects() {
   const entries = await contentfulClient.getEntries({
     content_type: 'projects',
-    order: ['-sys.createdAt']
+    order: ['-sys.createdAt'],
+    // Add a unique query parameter to bust cache when needed
+    'sys.revision': Date.now()
   })
   
   return entries
