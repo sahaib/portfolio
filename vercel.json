@@ -3,6 +3,5 @@
   "devCommand": "pnpm dev",
   "installCommand": "pnpm install",
   "framework": "astro",
-  "outputDirectory": "dist",
-  "analytics": true
+  "outputDirectory": "dist"
 }
