@@ -63,7 +63,7 @@ const entries = await contentfulClient.getEntries<Project>({
       </div>
     </TopLayout>
     <BottomLayout size="xl">
-      <div class="flex w-full flex-wrap justify-center gap-4">
+      <div class="portfolio-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 max-w-7xl mx-auto px-4 sm:px-6">
         {
           entries.items
             .sort(
@@ -72,7 +72,10 @@ const entries = await contentfulClient.getEntries<Project>({
                 new Date(a.sys.createdAt).getTime()
             )
             .map((entry: any, index: number) => (
-              <div class="project-card-container opacity-0" style={`animation-delay: ${index * 150}ms;`}>
+              <div 
+                class="project-card-container opacity-0" 
+                style={`animation-delay: ${index * 150}ms;`}
+              >
                 <ProjectCard
                   key={entry?.sys?.id}
                   href={entry?.fields?.website}
@@ -80,7 +83,7 @@ const entries = await contentfulClient.getEntries<Project>({
                   subheading={entry?.fields?.description}
                   imagePath={entry?.fields?.img?.fields?.file.url}
                   altText={entry?.fields?.img?.fields.title}
-                  class="w-full sm:w-full"
+                  class="h-full"
                 />
               </div>
             ))
@@ -103,33 +106,86 @@ const entries = await contentfulClient.getEntries<Project>({
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.1 });
+    }, { 
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    });
     
     cards.forEach(card => {
       observer.observe(card);
+    });
+    
+    // Add hover listeners for card interactive effects
+    cards.forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        // Add hover class that we can use for potential effects
+        card.classList.add('card-hover');
+        
+        // Optional: Add subtle hover effect to other cards
+        cards.forEach(otherCard => {
+          if (otherCard !== card) {
+            otherCard.classList.add('card-dim');
+          }
+        });
+      });
+      
+      card.addEventListener('mouseleave', () => {
+        card.classList.remove('card-hover');
+        
+        // Remove dim effect from other cards
+        cards.forEach(otherCard => {
+          otherCard.classList.remove('card-dim');
+        });
+      });
     });
   });
 </script>
 
 <style>
+  .portfolio-grid {
+    padding-bottom: 2rem;
+  }
+  
   .project-card-container {
-    @apply w-full sm:w-[calc(50%-1rem)] transition-all duration-700;
-    transform: translateY(30px);
+    @apply transition-all duration-700;
+    transform: translateY(40px);
   }
   
   .animate-in {
     @apply opacity-100;
     transform: translateY(0);
+    animation: cardAppear 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
   
-  @keyframes fadeInUp {
-    from {
+  .card-dim {
+    opacity: 0.7;
+    filter: saturate(0.8) brightness(0.9);
+    transition: all 0.4s ease;
+  }
+  
+  @keyframes cardAppear {
+    0% {
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(40px) scale(0.95);
     }
-    to {
+    100% {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
+    }
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    .project-card-container,
+    .animate-in {
+      transition: none !important;
+      animation: none !important;
+      transform: none !important;
+      opacity: 1 !important;
+    }
+    
+    .card-dim {
+      opacity: 1 !important;
+      filter: none !important;
     }
   }
 </style>
