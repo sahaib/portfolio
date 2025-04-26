@@ -10,7 +10,7 @@ export const LINKS = {
   github: 'https://github.com/sahaib',
   linkedin: 'https://www.linkedin.com/in/sahaibsingh/',
   mail: 'mailto:hello@sahaibsingh.com',
-  instagram: 'https://www.instagram.com/igsahaib/',
+  kofi: 'https://ko-fi.com/sahaib',
   medium: 'https://medium.com/@sahaibsingh001.ss/',
   discord: 'https://discordapp.com/users/756914232347328553',
 }

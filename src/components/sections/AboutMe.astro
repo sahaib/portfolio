@@ -1,29 +1,41 @@
 ---
 import Card from '../Card.astro'
+import type { HTMLTag } from 'astro/types'
 ---
 
 <Card colSpan="md:col-span-1" rowSpan="md:row-span-6" title="About me">
   <div class="flex flex-col gap-2">
     <p class="text-sm font-light">
-      I currently work at Freightify as a Software Solution Engineer in India 🇮🇳.
+      Currently, I'm a Product Manager at Freightify, where I lead product strategy and development 
+      for digital freight solutions. I bridge the gap between business needs and technical implementation,
+      driving innovation in the global logistics industry.
       <br />
       <br />
-      My primary tools and technologies include:
+      My expertise includes:
     </p>
     <ul class="list-disc list-inside text-sm font-light ml-2 space-y-1">
-      <li>Cursor IDE</li>
-      <li>Vercel</li>
-      <li>NextJS</li>
-      <li>React</li>
-      <li>TailwindCSS</li>
-      <li>JavaScript</li>
-      <li>Astro</li>
-      <li>NodeJS</li>
+      <li>Product Strategy & Roadmapping</li>
+      <li>Agile Project Management</li>
+      <li>User Research & Analytics</li>
+      <li>Technical Product Management</li>
+      <li>Cross-functional Team Leadership</li>
+      <li>Data-Driven Decision Making</li>
     </ul>
     
-    <p class="text-sm font-light mt-2">
-      Beyond coding, I'm passionate about AI, graphic design, and exploring new places. 
-      I enjoy cycling and discovering new music in my free time.
+    <p class="text-sm font-light mt-4">
+      Beyond product management, I'm passionate about creating user-centric solutions that drive business growth.
+      I specialize in translating complex technical capabilities into valuable product features.
+      When I'm not working on products, you'll find me analyzing market trends, engaging with users,
+      and staying updated with the latest in technology and product innovation.
     </p>
+
+    <div class="flex flex-wrap gap-2 mt-4">
+      <span class="px-2 py-1 text-xs font-medium bg-primary/10 text-primary rounded-md">Product Strategy</span>
+      <span class="px-2 py-1 text-xs font-medium bg-primary/10 text-primary rounded-md">Agile</span>
+      <span class="px-2 py-1 text-xs font-medium bg-primary/10 text-primary rounded-md">User Research</span>
+      <span class="px-2 py-1 text-xs font-medium bg-primary/10 text-primary rounded-md">Analytics</span>
+      <span class="px-2 py-1 text-xs font-medium bg-primary/10 text-primary rounded-md">Leadership</span>
+      <span class="px-2 py-1 text-xs font-medium bg-primary/10 text-primary rounded-md">Tech PM</span>
+    </div>
   </div>
 </Card>
