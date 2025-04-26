@@ -11,22 +11,18 @@ const debugEnvVars = () => {
 };
 
 // Create a configured client for preview and delivery
-const createConfiguredClient = (preview: boolean) => {
-  debugEnvVars();
-  
+const createConfiguredClient = () => {
   const spaceId = import.meta.env.CONTENTFUL_SPACE_ID;
-  const deliveryToken = import.meta.env.CONTENTFUL_DELIVERY_TOKEN;
-  const previewToken = import.meta.env.CONTENTFUL_PREVIEW_TOKEN;
+  const accessToken = import.meta.env.CONTENTFUL_DELIVERY_TOKEN;
 
-  if (!spaceId || (!deliveryToken && !previewToken)) {
+  if (!spaceId || !accessToken) {
     console.error('Missing required Contentful configuration');
     throw new Error('Missing required Contentful configuration');
   }
 
   return createClient({
     space: spaceId,
-    accessToken: preview ? previewToken : deliveryToken,
-    host: preview ? 'preview.contentful.com' : 'cdn.contentful.com',
+    accessToken: accessToken,
     // Add performance optimizations
     retryOnError: true,
     timeout: 30000,
@@ -34,9 +30,7 @@ const createConfiguredClient = (preview: boolean) => {
   });
 };
 
-// Default to delivery API in production, preview in development
-const isDev = import.meta.env.DEV;
-export const contentfulClient = createConfiguredClient(isDev);
+export const contentfulClient = createConfiguredClient();
 
 // Cache for projects
 let cachedProjects: any = null;

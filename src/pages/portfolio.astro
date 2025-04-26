@@ -6,7 +6,6 @@ import BottomLayout from '../layouts/BottomLayout.astro'
 import ProjectCard from '../components/ProjectCard.astro'
 
 import { contentfulClient } from '../lib/contentful'
-import { documentToHtmlString } from '@contentful/rich-text-html-renderer'
 import type { EntryFieldTypes, EntryCollection } from 'contentful'
 
 interface Project {
@@ -52,7 +51,7 @@ const categories = {
   title="Portfolio"
   description="A showcase of my projects, tools, and design work"
 >
-  <main class="flex min-h-[80vh] flex-auto flex-col" transition:animate="slide">
+  <main class="flex min-h-[80vh] flex-auto flex-col">
     <TopLayout>
       <div class="flex flex-col space-y-4">
         <div class="flex items-center justify-between">
@@ -87,7 +86,7 @@ const categories = {
     </TopLayout>
 
     <BottomLayout size="xl">
-      <div class="space-y-16 max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="space-y-16 max-w-7xl mx-auto px-4 sm:px-6" id="portfolio-content">
         {
           error ? (
             <div class="flex flex-col items-center justify-center py-20 text-center">
@@ -98,12 +97,12 @@ const categories = {
                 <h3 class="text-xl font-semibold mb-2">Error Loading Projects</h3>
                 <p class="text-muted-foreground">{error}</p>
               </div>
-              <a 
-                href="/portfolio" 
+              <button 
+                onclick="window.location.reload()"
                 class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
               >
                 Try Again
-              </a>
+              </button>
             </div>
           ) : entries.items.length === 0 ? (
             <div class="flex flex-col items-center justify-center py-20 text-center">
@@ -227,10 +226,7 @@ const categories = {
 </style>
 
 <script>
-  document.addEventListener('astro:page-load', () => {
-    // Add console log to debug page load
-    console.log('Portfolio page loaded');
-    
+  const initializeAnimations = () => {
     const cards = document.querySelectorAll('.project-card-container');
     
     const observer = new IntersectionObserver((entries) => {
@@ -267,5 +263,9 @@ const categories = {
         });
       });
     });
-  });
+  };
+
+  // Initialize animations on both page load and navigation
+  document.addEventListener('astro:page-load', initializeAnimations);
+  document.addEventListener('DOMContentLoaded', initializeAnimations);
 </script>
