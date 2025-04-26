@@ -14,80 +14,111 @@ interface Project {
   fields: {
     name: EntryFieldTypes.Text
     img: EntryFieldTypes.AssetLink
-    website: EntryFieldTypes.EntryResourceLink<any>
-    repositorio: EntryFieldTypes.EntryResourceLink<any>
+    website: EntryFieldTypes.Symbol
+    repositorio: EntryFieldTypes.Symbol
+    category: EntryFieldTypes.Symbol
+    techStack: EntryFieldTypes.Array<EntryFieldTypes.Symbol>
+    description: EntryFieldTypes.Text
   }
 }
 
 // Explicitly specify content_type to only get projects
 const entries = await contentfulClient.getEntries<Project>({
-  content_type: 'projects' // This ensures only projects are fetched, not blog posts
+  content_type: 'projects',
+  order: ['-sys.createdAt']
 }).catch(err => {
   console.error('Contentful Error:', err);
   return { items: [] };
 })
+
+// Group projects by category
+const groupedProjects = entries.items.reduce((acc, project) => {
+  const category = project?.fields?.category || 'Other';
+  if (!acc[category]) {
+    acc[category] = [];
+  }
+  acc[category].push(project);
+  return acc;
+}, {});
+
+const categories = {
+  'Featured': 'Highlighted projects that showcase my best work',
+  'SaaS': 'Software as a Service solutions I\'ve built',
+  'Tools': 'Utility tools and applications',
+  'Design': 'UI/UX and brand design projects',
+  'Other': 'Other noteworthy projects'
+};
 ---
 
 <BaseLayout
   title="Portfolio"
-  description="Projects and some clone's that I did"
+  description="A showcase of my projects, tools, and design work"
 >
   <main class="flex min-h-[80vh] flex-auto flex-col" transition:animate="slide">
     <TopLayout>
-      <div class="flex items-center justify-between">
-        <h2
-          class="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0"
-        >
-          Projects and work
-        </h2>
-        <a 
-          href="/" 
-          class="flex items-center text-sm font-medium text-primary transition-colors hover:text-primary/80"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="mr-1 h-4 w-4"
+      <div class="flex flex-col space-y-4">
+        <div class="flex items-center justify-between">
+          <h1 class="scroll-m-20 text-4xl font-bold tracking-tight">
+            Portfolio
+          </h1>
+          <a 
+            href="/" 
+            class="flex items-center text-sm font-medium text-primary transition-colors hover:text-primary/80"
           >
-            <path d="m15 18-6-6 6-6"></path>
-          </svg>
-          Back to Home
-        </a>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="mr-1 h-4 w-4"
+            >
+              <path d="m15 18-6-6 6-6"></path>
+            </svg>
+            Back to Home
+          </a>
+        </div>
+        <p class="text-lg text-muted-foreground">
+          A collection of projects that demonstrate my expertise in product management, development, and design.
+        </p>
       </div>
     </TopLayout>
+
     <BottomLayout size="xl">
-      <div class="portfolio-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 max-w-7xl mx-auto px-4 sm:px-6">
-        {
-          entries.items
-            .sort(
-              (a, b) =>
-                new Date(b.sys.createdAt).getTime() -
-                new Date(a.sys.createdAt).getTime()
-            )
-            .map((entry: any, index: number) => (
-              <div 
-                class="project-card-container opacity-0" 
-                style={`animation-delay: ${index * 150}ms;`}
-              >
-                <ProjectCard
-                  key={entry?.sys?.id}
-                  href={entry?.fields?.website}
-                  heading={entry?.fields?.name}
-                  subheading={entry?.fields?.description}
-                  imagePath={entry?.fields?.img?.fields?.file.url}
-                  altText={entry?.fields?.img?.fields.title}
-                  class="h-full"
-                />
+      <div class="space-y-16 max-w-7xl mx-auto px-4 sm:px-6">
+        {Object.entries(categories).map(([category, description]) => (
+          groupedProjects[category] && groupedProjects[category].length > 0 && (
+            <section class="space-y-8">
+              <div class="space-y-2">
+                <h2 class="text-2xl font-semibold tracking-tight">{category}</h2>
+                <p class="text-muted-foreground">{description}</p>
               </div>
-            ))
-        }
+              
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
+                {groupedProjects[category].map((project: any, index: number) => (
+                  <div 
+                    class="project-card-container opacity-0" 
+                    style={`animation-delay: ${index * 150}ms;`}
+                  >
+                    <ProjectCard
+                      key={project?.sys?.id}
+                      href={project?.fields?.website}
+                      heading={project?.fields?.name}
+                      subheading={project?.fields?.description}
+                      imagePath={project?.fields?.img?.fields?.file.url}
+                      altText={project?.fields?.img?.fields.title}
+                      class="h-full"
+                    />
+                  </div>
+                ))}
+              </div>
+            </section>
+          )
+        ))}
       </div>
     </BottomLayout>
   </main>
@@ -98,7 +129,6 @@ const entries = await contentfulClient.getEntries<Project>({
   document.addEventListener('astro:page-load', () => {
     const cards = document.querySelectorAll('.project-card-container');
     
-    // Use Intersection Observer to trigger animations when cards come into view
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -118,10 +148,7 @@ const entries = await contentfulClient.getEntries<Project>({
     // Add hover listeners for card interactive effects
     cards.forEach(card => {
       card.addEventListener('mouseenter', () => {
-        // Add hover class that we can use for potential effects
         card.classList.add('card-hover');
-        
-        // Optional: Add subtle hover effect to other cards
         cards.forEach(otherCard => {
           if (otherCard !== card) {
             otherCard.classList.add('card-dim');
@@ -131,8 +158,6 @@ const entries = await contentfulClient.getEntries<Project>({
       
       card.addEventListener('mouseleave', () => {
         card.classList.remove('card-hover');
-        
-        // Remove dim effect from other cards
         cards.forEach(otherCard => {
           otherCard.classList.remove('card-dim');
         });
@@ -174,9 +199,22 @@ const entries = await contentfulClient.getEntries<Project>({
     }
   }
   
+  /* Category headers animation */
+  section {
+    @apply transition-all duration-500;
+  }
+  
+  section:hover h2 {
+    @apply text-primary;
+    transform: translateX(8px);
+    transition: all 0.3s ease;
+  }
+  
   @media (prefers-reduced-motion: reduce) {
     .project-card-container,
-    .animate-in {
+    .animate-in,
+    section,
+    section:hover h2 {
       transition: none !important;
       animation: none !important;
       transform: none !important;
