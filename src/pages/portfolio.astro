@@ -15,25 +15,26 @@ interface Project {
     name: EntryFieldTypes.Text
     img: EntryFieldTypes.AssetLink
     website: EntryFieldTypes.Symbol
-    repositorio: EntryFieldTypes.Symbol
-    category: EntryFieldTypes.Symbol
-    techStack: EntryFieldTypes.Array<EntryFieldTypes.Symbol>
     description: EntryFieldTypes.Text
   }
 }
 
-// Explicitly specify content_type to only get projects
+// Optimize the query by selecting only needed fields
 const entries = await contentfulClient.getEntries<Project>({
   content_type: 'projects',
-  order: ['-sys.createdAt']
+  order: ['-sys.createdAt'],
+  select: ['fields.name', 'fields.description', 'fields.img', 'fields.website'],
+  limit: 100
 }).catch(err => {
   console.error('Contentful Error:', err);
-  return { items: [] };
-})
+  return { error: err.message, items: [] };
+});
 
-// Group projects by category
+const hasError = 'error' in entries;
+
 const groupedProjects = entries.items.reduce((acc, project) => {
-  const category = project?.fields?.category || 'Other';
+  // Default all projects to 'Featured' category if no category is specified
+  const category = 'Featured';
   if (!acc[category]) {
     acc[category] = [];
   }
@@ -42,11 +43,7 @@ const groupedProjects = entries.items.reduce((acc, project) => {
 }, {});
 
 const categories = {
-  'Featured': 'Highlighted projects that showcase my best work',
-  'SaaS': 'Software as a Service solutions I\'ve built',
-  'Tools': 'Utility tools and applications',
-  'Design': 'UI/UX and brand design projects',
-  'Other': 'Other noteworthy projects'
+  'Featured': 'A collection of my notable projects and work',
 };
 ---
 
@@ -90,39 +87,143 @@ const categories = {
 
     <BottomLayout size="xl">
       <div class="space-y-16 max-w-7xl mx-auto px-4 sm:px-6">
-        {Object.entries(categories).map(([category, description]) => (
-          groupedProjects[category] && groupedProjects[category].length > 0 && (
-            <section class="space-y-8">
-              <div class="space-y-2">
-                <h2 class="text-2xl font-semibold tracking-tight">{category}</h2>
-                <p class="text-muted-foreground">{description}</p>
+        {
+          hasError ? (
+            <div class="flex flex-col items-center justify-center py-20 text-center">
+              <div class="text-red-500 mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <h3 class="text-xl font-semibold mb-2">Error Loading Projects</h3>
+                <p class="text-muted-foreground">{entries.error || 'Failed to load projects. Please check your Contentful configuration.'}</p>
               </div>
-              
-              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
-                {groupedProjects[category].map((project: any, index: number) => (
-                  <div 
-                    class="project-card-container opacity-0" 
-                    style={`animation-delay: ${index * 150}ms;`}
-                  >
-                    <ProjectCard
-                      key={project?.sys?.id}
-                      href={project?.fields?.website}
-                      heading={project?.fields?.name}
-                      subheading={project?.fields?.description}
-                      imagePath={project?.fields?.img?.fields?.file.url}
-                      altText={project?.fields?.img?.fields.title}
-                      class="h-full"
-                    />
+              <a 
+                href="/portfolio" 
+                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+              >
+                Try Again
+              </a>
+            </div>
+          ) : entries.items.length === 0 ? (
+            <div class="flex flex-col items-center justify-center py-20 text-center">
+              <div class="loading-spinner mb-4"></div>
+              <p class="text-lg text-muted-foreground">Loading projects...</p>
+            </div>
+          ) : (
+            Object.entries(categories).map(([category, description]) => (
+              groupedProjects[category] && groupedProjects[category].length > 0 && (
+                <section class="space-y-8">
+                  <div class="space-y-2">
+                    <h2 class="text-2xl font-semibold tracking-tight">{category}</h2>
+                    <p class="text-muted-foreground">{description}</p>
                   </div>
-                ))}
-              </div>
-            </section>
+                  
+                  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
+                    {groupedProjects[category].map((project: any, index: number) => (
+                      <div 
+                        class="project-card-container opacity-0" 
+                        style={`animation-delay: ${index * 150}ms;`}
+                      >
+                        <ProjectCard
+                          key={project?.sys?.id}
+                          href={project?.fields?.website}
+                          heading={project?.fields?.name}
+                          subheading={project?.fields?.description}
+                          imagePath={project?.fields?.img?.fields?.file.url}
+                          altText={project?.fields?.img?.fields.title}
+                          class="h-full"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )
+            ))
           )
-        ))}
+        }
       </div>
     </BottomLayout>
   </main>
 </BaseLayout>
+
+<style>
+  .portfolio-grid {
+    padding-bottom: 2rem;
+  }
+  
+  .project-card-container {
+    @apply transition-all duration-700;
+    transform: translateY(40px);
+  }
+  
+  .animate-in {
+    @apply opacity-100;
+    transform: translateY(0);
+    animation: cardAppear 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  
+  .card-dim {
+    opacity: 0.7;
+    filter: saturate(0.8) brightness(0.9);
+    transition: all 0.4s ease;
+  }
+  
+  @keyframes cardAppear {
+    0% {
+      opacity: 0;
+      transform: translateY(40px) scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  
+  /* Loading spinner animation */
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid hsl(var(--primary) / 0.2);
+    border-top-color: hsl(var(--primary));
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Category headers animation */
+  section {
+    @apply transition-all duration-500;
+  }
+  
+  section:hover h2 {
+    @apply text-primary;
+    transform: translateX(8px);
+    transition: all 0.3s ease;
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    .project-card-container,
+    .animate-in,
+    section,
+    section:hover h2,
+    .loading-spinner {
+      transition: none !important;
+      animation: none !important;
+      transform: none !important;
+      opacity: 1 !important;
+    }
+    
+    .card-dim {
+      opacity: 1 !important;
+      filter: none !important;
+    }
+  }
+</style>
 
 <script>
   // Animate cards on page load
@@ -165,65 +266,3 @@ const categories = {
     });
   });
 </script>
-
-<style>
-  .portfolio-grid {
-    padding-bottom: 2rem;
-  }
-  
-  .project-card-container {
-    @apply transition-all duration-700;
-    transform: translateY(40px);
-  }
-  
-  .animate-in {
-    @apply opacity-100;
-    transform: translateY(0);
-    animation: cardAppear 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  }
-  
-  .card-dim {
-    opacity: 0.7;
-    filter: saturate(0.8) brightness(0.9);
-    transition: all 0.4s ease;
-  }
-  
-  @keyframes cardAppear {
-    0% {
-      opacity: 0;
-      transform: translateY(40px) scale(0.95);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-  }
-  
-  /* Category headers animation */
-  section {
-    @apply transition-all duration-500;
-  }
-  
-  section:hover h2 {
-    @apply text-primary;
-    transform: translateX(8px);
-    transition: all 0.3s ease;
-  }
-  
-  @media (prefers-reduced-motion: reduce) {
-    .project-card-container,
-    .animate-in,
-    section,
-    section:hover h2 {
-      transition: none !important;
-      animation: none !important;
-      transform: none !important;
-      opacity: 1 !important;
-    }
-    
-    .card-dim {
-      opacity: 1 !important;
-      filter: none !important;
-    }
-  }
-</style>
