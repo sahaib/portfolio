@@ -61,6 +61,7 @@ const categories = {
           <div class="flex items-center gap-4">
             <button 
               id="refreshButton"
+              onclick="window.location.reload()"
               class="flex items-center gap-2 text-sm font-medium text-primary transition-colors hover:text-primary/80"
               title="Refresh projects"
             >
@@ -125,6 +126,7 @@ const categories = {
               </div>
               <button 
                 id="retryButton"
+                onclick="window.location.reload()"
                 class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
               >
                 Try Again
@@ -259,8 +261,28 @@ const categories = {
   }
 </style>
 
-<script>
-  const initializeAnimations = () => {
+<script is:inline>
+  // Handle refresh button click
+  function handleRefresh() {
+    window.location.reload();
+  }
+
+  // Add event listeners
+  function initializeRefreshButtons() {
+    const refreshButton = document.getElementById('refreshButton');
+    const retryButton = document.getElementById('retryButton');
+    
+    if (refreshButton) {
+      refreshButton.onclick = handleRefresh;
+    }
+    
+    if (retryButton) {
+      retryButton.onclick = handleRefresh;
+    }
+  }
+
+  // Initialize animations
+  function initializeAnimations() {
     const cards = document.querySelectorAll('.project-card-container');
     
     const observer = new IntersectionObserver((entries) => {
@@ -277,10 +299,8 @@ const categories = {
     
     cards.forEach(card => {
       observer.observe(card);
-    });
-    
-    // Add hover listeners for card interactive effects
-    cards.forEach(card => {
+      
+      // Add hover listeners for card interactive effects
       card.addEventListener('mouseenter', () => {
         card.classList.add('card-hover');
         cards.forEach(otherCard => {
@@ -297,26 +317,16 @@ const categories = {
         });
       });
     });
-  };
+  }
 
-  // Handle refresh button click
-  const handleRefresh = () => {
-    window.location.reload();
-  };
-
-  // Initialize animations and event listeners
-  document.addEventListener('astro:page-load', () => {
+  // Initialize everything when the DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      initializeRefreshButtons();
+      initializeAnimations();
+    });
+  } else {
+    initializeRefreshButtons();
     initializeAnimations();
-    
-    const refreshButton = document.getElementById('refreshButton');
-    const retryButton = document.getElementById('retryButton');
-    
-    if (refreshButton) {
-      refreshButton.addEventListener('click', handleRefresh);
-    }
-    
-    if (retryButton) {
-      retryButton.addEventListener('click', handleRefresh);
-    }
-  });
+  }
 </script>
