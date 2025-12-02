@@ -117,12 +117,29 @@ export const STUDIES = [
 
 export const EXPERIENCE = [
   {
+    company: 'NAVTOR India Pvt. Ltd.',
+    location: 'Mumbai, India',
+    position: 'Process & Efficiency Lead',
+    link: 'https://www.navtor.com/',
+    start: 'Sept 2025',
+    end: 'Present',
+    tasks: [
+      'Delivered major improvements within the first three months across product, support, and automation, boosting customer experience and internal operational efficiency for global maritime clients',
+      'Created NAVTOR’s first AI-based support assistant using MS Copilot Studio to automate ticket analysis, root cause detection, and context gathering by integrating internal APIs and documentation sources',
+      'Introduced structured workflows and technical articulation standards, improving alignment and handovers between support, product, and engineering teams for the Digital Logbooks product',
+      'Mapped critical product gaps and recurring customer issues by analyzing logs, system behavior, and user workflows, establishing a stronger and faster feedback loop between customer-facing teams and engineering',
+      'Built internal utilities and process enhancers that simplified troubleshooting, reduced dependency on senior engineers, and improved consistency of L2 and L3 responses for vessel-related queries',
+      'Acted as a bridge between product and support, translating complex technical issues into actionable insights that accelerated product decisions and streamlined cross-functional coordination',
+      'Designed and managed the complete information architecture, navigation structure, and workflow templates for the Digital Logbook SharePoint site, enabling scalable knowledge management and faster technical onboarding',
+    ],
+  },
+  {
     company: 'Freightify Solutions India PVT. LTD.',
     location: 'Chennai, India',
     position: 'Product Management',
     start: 'Nov 2021',
     link: 'https://freightify.com/',
-    end: 'Present',
+    end: 'Aug 2025',
     tasks: [
       'Spearheaded product strategy for Freightify\'s SaaS platform, focusing on rate procurement, quotation automation, and track-and-trace solutions',
       'Led development of internal tools, automating crisis workflows within rate management system',
